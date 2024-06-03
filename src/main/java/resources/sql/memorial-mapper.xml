@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<entry key="insertMemorials">
+	INSERT INTO MEMORIALS(MEMORIALS_NO
+						,MEMORIALS_DATE
+						,MEMORIALS_TIME
+						,MEMORIALS_PARTS
+						,MEMORIALS_CONTENT
+						,MEMORIALS_SELFSCORE
+						,CREATE_DATE
+						,MUSER_ID
+						,STATUS
+						)
+						VALUES(SEQ_MNO.NEXTVAL
+						,?
+						,?
+						,?
+						,?
+						,?
+						,DEFAULT
+						,?
+						,DEFAULT)
+	</entry>
+<entry key="memorialsInsertAttachment">
+    INSERT INTO MEMORIALSATTACHMENT(FILE_NO		
+    							   ,REF_MNO
+    							   ,ORIGIN_NAME
+    							   ,CHANGE_NAME
+    							   ,FILE_PATH
+    							   ,UPLOAD_DATE
+    							   ,STATUS
+    							   )
+    VALUES(SEQ_MNO.NEXTVAL, ?, ?, ?, ?, SYSDATE,DEFAULT)
+</entry>
+<entry key="selectmemorials">
+		SELECT REF_MNO.NEXTVAL MNO
+		FROM DUAL
+</entry>
+<entry key="memorialsList">
+		SELECT MEMORIALS_NO,
+       		   MEMORIALS_DATE,
+      		   MEMORIALS_TIME,
+       		   MEMORIALS_PARTS,
+       		   MEMORIALS_CONTENT,
+       		   MEMORIALS_SELFSCORE
+		FROM MEMORIALS
+		WHERE MUSER_ID = ?
+			AND STATUS = 'Y'	
+		ORDER BY MEMORIALS_DATE DESC
+	</entry>
+	<entry key="selectAttachment">
+		SELECT FILE_NO
+		      ,ORIGIN_NAME
+		      ,CHANGE_NAME
+		      ,FILE_PATH
+		FROM MEMORIALSATTACHMENT
+		WHERE FILE_NO = ?
+		AND STATUS = 'Y'
+	</entry>
+	<entry key="deleteMemorials">
+		UPDATE MEMORIALS
+		SET STATUS = 'N'
+		WHERE MEMORIALS_NO = ?
+	</entry>
+	<entry key="deleteMemorialsAttachment">
+		UPDATE MEMORIALSATTACHMENT
+		SET STATUS = 'N'
+		WHERE FILE_NO = ?
+	</entry>
+	<entry key="updateMemorials">
+		UPDATE MEMORIALS
+		SET MEMORIALS_DATE = ? 
+		   ,MEMORIALS_TIME = ?
+		   ,MEMORIALS_PARTS = ?
+		   ,MEMORIALS_CONTENT = ?
+		   ,MEMORIALS_SELFSCORE = ?
+		   ,CREATE_DATE = SYSDATE
+		WHERE MEMORIALS_NO = ?
+		AND STATUS ='Y'
+	</entry>
+	<entry key="updateMemorialsAttachment">
+		UPDATE MEMORIALSATTACHMENT
+		SET ORIGIN_NAME = ? 
+		   ,CHANGE_NAME = ?
+		   ,FILE_PATH = ?
+		   ,UPLOAD_DATE = SYSDATE
+		WHERE FILE_NO = ?
+		AND STATUS ='Y'
+	</entry>
+	<entry key="selectMemorials">
+		SELECT MEMORIALS_NO
+			  ,MEMORIALS_DATE
+			  ,MEMORIALS_TIME
+			  ,MEMORIALS_PARTS
+			  ,MEMORIALS_CONTENT
+			  ,MEMORIALS_SELFSCORE
+		FROM MEMORIALS
+		WHERE MEMORIALS_NO = ?
+		AND STATUS = 'Y'
+	</entry>
+	<entry key="selectMemorialsAttachment">
+		SELECT FILE_NO
+			  ,ORIGIN_NAME
+			  ,CHANGE_NAME
+			  ,FILE_PATH
+		FROM MEMORIALSATTACHMENT
+		WHERE FILE_NO = ?
+		AND STATUS = 'Y'
+	</entry>
+</properties>

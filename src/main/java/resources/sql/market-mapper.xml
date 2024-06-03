@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<entry key="selectItemListOrderBySal">
+	SELECT ITEM_CODE,
+		   CATEGORY_NAME,
+		   PRICE,
+		   DISCOUNT,
+		   ITEM_NAME,
+		   SALES_VOL,
+		   SCORE,
+		   FILE_PATH || CHANGE_NAME THUMBNAIL
+	FROM ITEM I
+	JOIN ITEM_CATEGORY USING (CATEGORY_NO)
+	JOIN ITEM_ATTACHMENT A ON (ITEM_CODE = REF_CODE)
+	WHERE I.STATUS='Y'
+    AND A.STATUS='Y'
+	AND FILE_LEVEL=1
+	ORDER BY SALES_VOL DESC
+	</entry>
+	
+	<entry key="selectItemListOrderBydate">
+	SELECT ITEM_CODE,
+		   CATEGORY_NAME,
+		   PRICE,
+		   DISCOUNT,
+		   ITEM_NAME,
+		   SALES_VOL,
+		   SCORE,
+		   FILE_PATH || CHANGE_NAME THUMBNAIL
+	FROM ITEM I
+	JOIN ITEM_CATEGORY USING (CATEGORY_NO)
+	JOIN ITEM_ATTACHMENT A ON (ITEM_CODE = REF_CODE)
+	WHERE I.STATUS='Y'
+    AND A.STATUS='Y'
+	AND FILE_LEVEL=1
+	ORDER BY I.UP_DATE DESC
+	</entry>
+	
+	<entry key="selectItemListOrderBysco">
+	SELECT ITEM_CODE,
+		   CATEGORY_NAME,
+		   PRICE,
+		   DISCOUNT,
+		   ITEM_NAME,
+		   SALES_VOL,
+		   SCORE,
+		   FILE_PATH || CHANGE_NAME THUMBNAIL
+	FROM ITEM I
+	JOIN ITEM_CATEGORY USING (CATEGORY_NO)
+	JOIN ITEM_ATTACHMENT A ON (ITEM_CODE = REF_CODE)
+	WHERE I.STATUS='Y'
+    AND A.STATUS='Y'
+	AND FILE_LEVEL=1
+	ORDER BY SCORE DESC
+	</entry>
+	
+	<entry key="selectItemListOrderByscoSort">
+	SELECT ITEM_CODE,
+		   CATEGORY_NAME,
+		   PRICE,
+		   DISCOUNT,
+		   ITEM_NAME,
+		   SALES_VOL,
+		   SCORE,
+		   FILE_PATH || CHANGE_NAME THUMBNAIL
+	FROM ITEM I
+	JOIN ITEM_CATEGORY USING (CATEGORY_NO)
+	JOIN ITEM_ATTACHMENT A ON (ITEM_CODE = REF_CODE)
+	WHERE I.STATUS='Y'
+    AND A.STATUS='Y'
+	AND FILE_LEVEL=1
+	AND CATEGORY_NO=?
+	ORDER BY SCORE DESC
+	</entry>
+	<entry key="selectItemListOrderByDateSoty">
+	SELECT ITEM_CODE,
+		   CATEGORY_NAME,
+		   PRICE,
+		   DISCOUNT,
+		   ITEM_NAME,
+		   SALES_VOL,
+		   SCORE,
+		   FILE_PATH || CHANGE_NAME THUMBNAIL
+	FROM ITEM I
+	JOIN ITEM_CATEGORY USING (CATEGORY_NO)
+	JOIN ITEM_ATTACHMENT A ON (ITEM_CODE = REF_CODE)
+	WHERE I.STATUS='Y'
+    AND A.STATUS='Y'
+	AND FILE_LEVEL=1
+	AND CATEGORY_NO=?
+	ORDER BY I.UP_DATE DESC
+	</entry>
+	<entry key="selectItemListOrderBySalSort">
+	SELECT ITEM_CODE,
+		   CATEGORY_NAME,
+		   PRICE,
+		   DISCOUNT,
+		   ITEM_NAME,
+		   SALES_VOL,
+		   SCORE,
+		   FILE_PATH || CHANGE_NAME THUMBNAIL
+	FROM ITEM I
+	JOIN ITEM_CATEGORY USING (CATEGORY_NO)
+	JOIN ITEM_ATTACHMENT A ON (ITEM_CODE = REF_CODE)
+	WHERE I.STATUS='Y'
+    AND A.STATUS='Y'
+	AND FILE_LEVEL=1
+	AND CATEGORY_NO=?
+	ORDER BY SALES_VOL DESC
+	</entry>
+	
+	<entry key="selectItem">
+		SELECT ITEM_NAME,
+			   CATEGORY_NAME,
+			   CATEGORY_NO,
+			   PRICE,
+			   DISCOUNT,
+			   SALES_VOL,
+			   STORAGE_METHOD,
+			   ITEM_CODE,
+			   STATUS
+		FROM ITEM
+		JOIN ITEM_CATEGORY USING (CATEGORY_NO)
+		WHERE ITEM_CODE=?
+	</entry>
+	
+	<entry key="selectCategory">
+		SELECT *
+		FROM ITEM_CATEGORY
+	</entry>
+	
+	<entry key="insertItem">
+		Insert into HEALTHLIFE.ITEM (ITEM_CODE,
+									CATEGORY_NO,
+									ITEM_NAME,
+									PRICE,
+									DISCOUNT,
+									SALES_VOL,
+									STATUS,
+									STORAGE_METHOD) 
+							values (SEQ_INO.NEXTVAL,
+									?,
+									?,
+									?,
+									?,0,'Y',
+									?)
+	</entry>
+	<entry key="insertItemAttachment">
+	INSERT INTO ITEM_ATTACHMENT(FILE_CODE,
+								REF_CODE,
+								ORIGIN_NAME,
+								CHANGE_NAME,
+								FILE_PATH,
+								FILE_LEVEL)
+					VALUES(SEQ_FNO.NEXTVAL,
+						   SEQ_INO.CURRVAL,
+						   ?,
+						   ?,
+						   ?,
+						   ?)
+	</entry>
+	
+	<entry key="selectAttachmentList">
+	SELECT FILE_CODE,
+		   ORIGIN_NAME,
+		   CHANGE_NAME,
+		   FILE_PATH
+	FROM ITEM_ATTACHMENT
+	WHERE REF_CODE=?
+	AND STATUS='Y'
+	ORDER BY FILE_LEVEL
+	</entry>
+	<entry key="insertComponent">
+	INSERT INTO COMPONENT(ITEM_CODE,
+						  CALORIE,
+						  PROTIN,
+						  SALT,
+						  CARBO,
+						  FAT,
+						  TRANS_FAT,
+						  SATURATED_FAT,
+						  CHOL,
+						  SUGAR
+						  )
+				   VALUES(SEQ_INO.CURRVAL,
+				   		  ?,
+				   		  ?,
+				   		  ?,
+				   		  ?,
+				   		  ?,
+				   		  ?,
+				   		  ?,
+				   		  ?,
+				   		  ?)
+	</entry>
+	<entry key="selectComponent">
+	SELECT *
+	FROM COMPONENT
+	WHERE ITEM_CODE=?
+	</entry>
+	<entry key="deactivateItem">
+		UPDATE ITEM SET
+		STATUS='N'
+		WHERE ITEM_CODE=?
+	</entry>
+	<entry key="insertOrder">
+		INSERT INTO ITEM_ORDER(ORDER_NUMBER,
+							   CUSTOMER_NAME,
+							   SHIPPING_DATE,
+							   POST_NUMBER,
+							   ADDRESS,
+							   PRICE,
+							   CART_LIST,
+							   USER_NO)
+					    VALUES(?,
+					    	   ?,
+					    	   ?,
+					    	   ?,
+					    	   ?,
+					    	   ?,
+					    	   ?,
+					    	   ?)
+					    	    
+	</entry>
+	
+	<entry key="updateItem">
+		UPDATE ITEM SET
+		CATEGORY_NO = ?,
+		ITEM_NAME= ?,
+		PRICE=?,
+		DISCOUNT=?,
+		STORAGE_METHOD=?
+		WHERE ITEM_CODE=?
+	</entry>
+	
+	<entry key="updateItemAttachment">
+	INSERT INTO ITEM_ATTACHMENT(FILE_CODE,
+								REF_CODE,
+								ORIGIN_NAME,
+								CHANGE_NAME,
+								FILE_PATH,
+								FILE_LEVEL)
+					VALUES(SEQ_FNO.NEXTVAL,
+						   ?,
+						   ?,
+						   ?,
+						   ?,
+						   ?)
+	
+	</entry>
+	
+	<entry key="updateComponent">
+	UPDATE COMPONENT SET
+	CALORIE=?,
+	PROTIN=?,
+	SALT=?,
+	CARBO=?,
+	FAT=?,
+	TRANS_FAT=?,
+	SATURATED_FAT=?,
+	CHOL=?,
+	SUGAR=?
+	WHERE ITEM_CODE=?
+	</entry>
+	
+	<entry key="deleteItemAttachment">
+	UPDATE ITEM_ATTACHMENT SET
+	STATUS = 'N'
+	WHERE FILE_LEVEL=?
+	AND REF_CODE=?
+	</entry>
+	
+	<entry key="selectOrder">
+	SELECT ORDER_NUMBER,
+			CUSTOMER_NAME,
+			SHIPPING_DATE,
+			POST_NUMBER,
+			ADDRESS,
+			PRICE,
+			CART_LIST,
+			USER_NO
+	FROM ITEM_ORDER
+	WHERE USER_NO=?
+	</entry>
+	
+	<entry key="updateSalVol">
+		UPDATE ITEM SET
+		SALES_VOL=?
+		WHERE ITEM_CODE=?
+	</entry>
+	
+	<entry key="insertReview">
+		INSERT INTO ITEM_REVIEW(REVIEW_NO,
+							   REF_ITEMNO,
+							   CONTENT,
+							   SCORE,
+							   REVIEW_WRITER
+							   )
+					    VALUES(SEQ_RVNO.NEXTVAL,
+					    	   ?,
+					    	   ?,
+					    	   ?,
+					    	   ?)
+					    	    
+	</entry>
+	<entry key="selectReview">
+		SELECT REVIEW_NO,
+			   REF_ITEMNO,
+			   CONTENT,
+			   SCORE,
+			   REVIEW_WRITER,
+			   NICKNAME,
+			   UP_DATE
+		FROM ITEM_REVIEW
+		JOIN MEMBER ON (REVIEW_WRITER = USER_NO )
+		WHERE REF_ITEMNO=?
+	</entry>
+	
+	<entry key="selectScore">
+	SELECT  
+	ROUND(AVG(SCORE),1) result
+	FROM ITEM_REVIEW
+	WHERE REF_ITEMNO=?
+	</entry>
+	
+	<entry key="updateScore">
+	UPDATE ITEM SET
+	SCORE = ?
+	WHERE ITEM_CODE= ?
+	</entry>
+	<entry key="selectItemListN">
+		SELECT ITEM_CODE,
+		   CATEGORY_NAME,
+		   PRICE,
+		   DISCOUNT,
+		   ITEM_NAME,
+		   SALES_VOL,
+		   SCORE,
+		   FILE_PATH || CHANGE_NAME THUMBNAIL
+	FROM ITEM I
+	JOIN ITEM_CATEGORY USING (CATEGORY_NO)
+	JOIN ITEM_ATTACHMENT A ON (ITEM_CODE = REF_CODE)
+	WHERE I.STATUS='N'
+    AND A.STATUS='Y'
+	AND FILE_LEVEL=1
+	ORDER BY SALES_VOL DESC
+	</entry>
+	<entry key="reactivateItem">
+		UPDATE ITEM SET
+		STATUS='Y'
+		WHERE ITEM_CODE=?
+	</entry>
+</properties>
